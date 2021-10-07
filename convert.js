@@ -1,13 +1,17 @@
-var parser = require('fast-xml-parser')
-var fs = require('fs')
-var path = require('path')
-var crypto = require('crypto')
+const xmlParser = require('fast-xml-parser')
+const fs = require('fs')
+const path = require('path')
+const crypto = require('crypto')
+const { ArgumentParser } = require('argparse')
+// const gitignoreParser = require('@gerhobbelt/gitignore-parser')
 
 
 // Begin Definitions
 
 const jflapExtension = ".jff"
 const jflapHashFile = ".jflap-hashes"
+
+const defaultMentorExtension = "nfa"
 
 const attributePrefix = "@"
 const stateFormat = {
@@ -54,18 +58,31 @@ class Transition
 
 // End Definitions
 
+var argumentParser = new ArgumentParser()
+argumentParser.add_argument('-i', '--input', {type: 'str', help: "Input .jff file / directory containing .jff files"})
+argumentParser.add_argument('-s', '--selector', {type: 'str', help: "Input file selectors in RegEx style (ex. '1.*')"})
+argumentParser.add_argument('-o', '--output', {type: 'str', help: "Output file / directory"})
+argumentParser.add_argument('-f', '--format', {type: 'str', help: "Output file format (ex. 'dfa', 'nfa')"})
 
-var arguments = process.argv.slice(2)
+var arguments = argumentParser.parse_args()
 
-if (arguments.length <= 0)
+if (arguments.input === null)
 {
   console.log("ERR: No input file provided")
   return
 }
 
-var inputJFLAPPath = arguments[0]
-var outputArgument1 = arguments[1]
-var outputArgument2 = arguments[2]
+var inputJFLAPPath = arguments.input
+var inputSelector = arguments.selector
+var outputMentorPath = arguments.output
+var outputFormat = arguments.format
+
+var selectorTester
+if (inputSelector !== null)
+{
+  selectorTester = new RegExp(inputSelector)
+  // selectorTester = gitignoreParser.compile(inputSelector) // doesn't seem to work :(
+}
 
 var jflapHashes = {}
 
@@ -84,9 +101,9 @@ if (fs.lstatSync(inputJFLAPPath).isDirectory())
   }
 
   fs.readdirSync(inputJFLAPPath).filter(file => {
-    return path.extname(file).toLowerCase() == jflapExtension
+    return path.extname(file).toLowerCase() == jflapExtension && (selectorTester === null || selectorTester.test(file))
   }).forEach(filePath => {
-    convertJFLAPToMentor(path.join(inputJFLAPPath, filePath), path.join(outputArgument2 || inputJFLAPPath, path.basename(filePath, jflapExtension) + "." + (outputArgument1 || "nfa")), jflapHashes)
+    convertJFLAPToMentor(path.join(inputJFLAPPath, filePath), path.join(outputMentorPath || inputJFLAPPath, path.basename(filePath, jflapExtension) + "." + (outputFormat || defaultMentorExtension)), jflapHashes)
   })
 
   fs.writeFileSync(jflapHashPath, JSON.stringify(jflapHashes))
@@ -99,21 +116,21 @@ else
     jflapHashes = JSON.parse(fs.readFileSync(jflapHashPath, {encoding:'utf8'}))
   }
 
-  convertJFLAPToMentor(inputJFLAPPath, outputArgument1, jflapHashes)
+  convertJFLAPToMentor(inputJFLAPPath, outputMentorPath, jflapHashes)
 
   fs.writeFileSync(jflapHashPath, JSON.stringify(jflapHashes))
 }
 
 function convertJFLAPToMentor(inputJFLAPPath, outputMentorPath, jflapHashes)
 {
-  var outputMentorPath = outputMentorPath || path.basename(inputJFLAPPath) + ".nfa"
+  var outputMentorPath = outputMentorPath || (path.basename(inputJFLAPPath) + "." + defaultMentorExtension)
 
   const logStarCount = 15
   console.log("*".repeat(logStarCount-1) + " " + path.basename(outputMentorPath) + " " + "*".repeat(logStarCount-1))
 
   var xmlJFLAPString = fs.readFileSync(inputJFLAPPath, {encoding:'utf8'})
 
-  var currentHash = crypto.createHash('md5').update(xmlJFLAPString).digest('hex')
+  var currentHash = crypto.createHash('md5').update(xmlJFLAPString + "--" + outputMentorPath).digest('hex')
   var previousHash = jflapHashes[path.basename(inputJFLAPPath)]
   jflapHashes[path.basename(inputJFLAPPath)] = currentHash
 
@@ -124,7 +141,7 @@ function convertJFLAPToMentor(inputJFLAPPath, outputMentorPath, jflapHashes)
     return
   }
 
-  var jsonJFLAPData = parser.parse(xmlJFLAPString, {
+  var jsonJFLAPData = xmlParser.parse(xmlJFLAPString, {
     attributeNamePrefix: attributePrefix,
     ignoreAttributes: false
   })
