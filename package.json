@@ -15,6 +15,6 @@
     "xml2json": "^0.12.0"
   },
   "bin": {
-    "j2m": "./convert.js"
+    "j2m": "./j2m.js"
   }
 }

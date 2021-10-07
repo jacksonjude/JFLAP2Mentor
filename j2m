@@ -1,1 +1,1 @@
-node "$(dirname $0)"/convert.js "$@"
+node "$(dirname $0)"/j2m.js "$@"

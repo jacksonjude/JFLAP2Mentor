@@ -10,14 +10,16 @@ cd JFLAP2Mentor
 npm install -g
 ```
 
-Note that the `-g` flag here will automatically link the `convert.js` code to the `j2m` command in your terminal. It can be excluded if you do not want the command to be symlinked.
+Note that the `-g` flag is optional but will automatically symlink the `j2m.js` code to the `j2m` command in your terminal.
 
 ## Arguments
 
-`-i, --input`: The input file (.jff) or input directory (containing .jff files)
+[Required] `-i, --input`: The input file (.jff) or input directory (containing .jff files)
 
-`-s, --selector`: A RegEx-style input selector to specify which files in an input directory will be used
+[Required] `-o, --output`: The output file or directory for Mentor format files
 
-`-o, --output`: The output file or directory for Mentor format files
+[Optional] `-s, --selector`: A RegEx-style input selector to specify which files in an input directory will be used
 
-`-f, --format`: The format of the output files (.dfa, .nfa) if a directory is used
+[Optional] `-f, --format`: The format of the output files (.dfa, .nfa) if a directory is used
+
+[Optional] `-a, --alphabet`: The output alphabet to be used (concatenated with identified characters in transitions)
