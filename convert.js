@@ -66,7 +66,7 @@ argumentParser.add_argument('-f', '--format', {type: 'str', help: "Output file f
 
 var arguments = argumentParser.parse_args()
 
-if (arguments.input === null)
+if (arguments.input === undefined)
 {
   console.log("ERR: No input file provided")
   return
