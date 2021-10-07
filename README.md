@@ -29,6 +29,9 @@ source ~/.zprofile
 ## Arguments
 
 `-i, --input`: The input file (.jff) or input directory (containing .jff files)
+
 `-s, --selector`: A RegEx-style input selector to specify which files in an input directory will be used
+
 `-o, --output`: The output file or directory for Mentor format files
+
 `-f, --format`: The format of the output files (.dfa, .nfa) if a directory is used
