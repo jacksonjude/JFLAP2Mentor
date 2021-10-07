@@ -1,0 +1,16 @@
+{
+  "name": "jflap2mentor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "convert.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node convert.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-xml-parser": "^3.20.3",
+    "xml2json": "^0.12.0"
+  }
+}
