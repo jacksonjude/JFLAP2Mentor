@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const xmlParser = require('fast-xml-parser')
 const fs = require('fs')
 const path = require('path')

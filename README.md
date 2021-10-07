@@ -4,27 +4,13 @@ Convert [JFLAP](https://www.jflap.org) files (.jff) to [Mentor](mentor-guide.pdf
 
 ## Setup
 
-### Install
-
 Install the node packages by running:
 ```
 cd JFLAP2Mentor
-npm install
+npm install -g
 ```
 
-### Alias Setup
-
-Add an alias in your terminal profile (.zprofile, .zshrc, .bash_profile, .bashrc, etc) for quick use.
-
-First, insert an alias assignment at the end of your profile:
-```
-alias j2m="/Users/jackson/JFLAP2Mentor/j2m"
-```
-
-Then, restart your terminal or run:
-```
-source ~/.zprofile
-```
+Note that the `-g` flag here will automatically link the `convert.js` code to the `j2m` command in your terminal. It can be excluded if you do not want the command to be symlinked.
 
 ## Arguments
 
