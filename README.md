@@ -23,3 +23,7 @@ Note that the `-g` flag is optional but will automatically symlink the `j2m.js` 
 [Optional] `-f, --format`: The format of the output files (.dfa, .nfa) if a directory is used
 
 [Optional] `-a, --alphabet`: The output alphabet to be used (concatenated with identified characters)
+
+[Optional] `-e, --environment`: Set passed in arguments to the environment (to use as the default arguments)
+
+[Optional] `-ep, --environment-print`: Print the current environment arguments

@@ -1,3 +1,5 @@
+const j2mEnvironmentFile = ".j2m-env"
+
 const jflapExtension = ".jff"
 const jflapHashFile = ".jflap-hashes"
 
@@ -26,6 +28,7 @@ const transitionFormat = {
 const logStarCount = 15
 
 module.exports = {
+  j2mEnvironmentFile: j2mEnvironmentFile,
   jflapExtension: jflapExtension,
   jflapHashFile: jflapHashFile,
   jflapCodes: jflapCodes,
