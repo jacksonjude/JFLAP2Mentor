@@ -1,6 +1,6 @@
 # JFLAP2Mentor
 
-Convert [JFLAP](https://www.jflap.org) files (.jff) to [Mentor](mentor-guide.pdf) format (.dfa, .nfa).
+Convert [JFLAP](https://www.jflap.org) files (.jff) to UCSB's [Mentor](mentor-guide.pdf) format (.dfa, .nfa).
 
 ## Setup
 
